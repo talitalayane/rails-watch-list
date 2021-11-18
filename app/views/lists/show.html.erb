@@ -1,0 +1,33 @@
+<div class="banner" style="background-image: linear-gradient(rgba(0,0,0,0.4),rgba(0,0,0,0.4)), url(<%= cl_image_path @list.photo.key %>);">
+  <div class="container">
+    <h1><%= @list.name %></h1>
+  </div>
+</div>
+
+<div class="container mt-5">
+  <% @list.bookmarks.each do |bookmark| %>
+    <div class="watch-card mb-3 row">
+      <div class="col-12 col-md-3 row justify-content-center">
+        <%= image_tag bookmark.movie.poster_url %>
+      </div>
+      <div class="watch-card-infos col-11 col-md-8 py-3">
+        <h2><%= "#{bookmark.movie.title} (#{bookmark.movie.rating})" %></h2>
+        <p><b>Comment:</b> <%= bookmark.comment %></p>
+        <p><b>Overview:</b> <%= bookmark.movie.overview %></p>
+      </div>
+    </div>
+  <% end %>
+
+  <div class="mx-auto bg-white col-12 col-md-8">
+    <div class="py-3 px-5">
+      <h3 class="text-center watch-text">Add a movie to the list</h3>
+      <%= simple_form_for [@list, @bookmark] do |f| %>
+        <%= f.association :movie, label:false, collection: Movie.all.order(:title), prompt: 'Choose a movie', input_html: { class: 'form-select' } %>
+        <%= f.input :comment, label: false, input_html: { class: 'form-control', placeholder: 'add a comment...'} %>
+        <%= f.submit class:'btn btn-outline-secondary w-100' %>
+      <% end %>
+    </div>
+  </div>
+
+  <%= link_to '<< home', root_path, class: 'btn btn-outline-light btn-sm my-3' %>
+</div>
